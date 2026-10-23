@@ -8,7 +8,6 @@ import {
   Menu, 
   X, 
   Globe, 
-  Eye, 
   Search,
   CheckCircle2,
   Building2,
@@ -34,9 +33,7 @@ export default function Navbar({
     fontSize, 
     increaseFontSize, 
     decreaseFontSize, 
-    resetFontSize, 
-    highContrast, 
-    toggleHighContrast 
+    resetFontSize
   } = useAccessibility();
   const { profile } = useUser();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -58,11 +55,11 @@ export default function Navbar({
 
   return (
     <header className="sticky top-0 z-40 bg-white shadow-sm border-b border-slate-200">
-      {/* Tricolor Subtle Accent Bar */}
+      {/* Requested Palette Hero Accent Bar: Marigold | Ice Silver | Deep Aubergine */}
       <div className="h-1.5 w-full grid grid-cols-3">
-        <div className="bg-[#FF9933]"></div>
-        <div className="bg-slate-200 border-x border-slate-300"></div>
-        <div className="bg-[#138808]"></div>
+        <div className="bg-[#EAAA00]" title="Marigold (#EAAA00)"></div>
+        <div className="bg-[#DDE3E8] border-x border-[#C5D0D9]" title="Ice Silver (#DDE3E8)"></div>
+        <div className="bg-[#3A0F34]" title="Deep Aubergine (#3A0F34)"></div>
       </div>
 
       {/* Accessibility & Language Utility Bar */}
@@ -113,19 +110,7 @@ export default function Navbar({
               </button>
             </div>
 
-            {/* High Contrast Toggle */}
-            <button
-              onClick={toggleHighContrast}
-              title="Toggle High Contrast Mode"
-              className={`flex items-center gap-1 px-2 py-0.5 rounded border transition-colors ${
-                highContrast 
-                  ? 'bg-amber-400 text-black border-amber-300 font-bold' 
-                  : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'
-              }`}
-            >
-              <Eye className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline text-[11px]">Contrast</span>
-            </button>
+
 
             {/* Language Switcher */}
             <button
@@ -162,8 +147,8 @@ export default function Navbar({
                 <span className="text-2xl font-black tracking-tight text-blue-950 font-sans">
                   CONNECTOR
                 </span>
-                <span className="bg-emerald-100 text-emerald-800 text-[10px] font-semibold px-2 py-0.5 rounded-full border border-emerald-300 hidden md:inline-flex items-center gap-1">
-                  <CheckCircle2 className="w-2.5 h-2.5" /> Verified GovTech
+                <span className="bg-[#DDE3E8] text-[#3A0F34] text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-[#C5D0D9] hidden md:inline-flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-[#EAAA00]" /> Verified GovTech
                 </span>
               </div>
               <p className="text-xs text-slate-500 font-medium tracking-wide">
@@ -226,16 +211,16 @@ export default function Navbar({
             {/* AI Voice Assistant Trigger */}
             <button
               onClick={onOpenVoiceAssistant}
-              className="flex items-center gap-2 px-3.5 py-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-medium text-xs sm:text-sm shadow-sm transition-all hover:shadow hover:-translate-y-0.5 cursor-pointer"
+              className="flex items-center gap-2 px-3.5 py-2.5 rounded-lg bg-gradient-to-r from-[#EAAA00] to-[#D49B00] hover:from-[#D49B00] hover:to-[#BD8700] text-[#190516] font-bold text-xs sm:text-sm shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5 cursor-pointer border border-[#FFE594]/50"
             >
               <div className="relative">
-                <Mic className="w-4 h-4" />
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                <Mic className="w-4 h-4 text-[#190516]" />
+                <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#3A0F34] rounded-full animate-ping"></span>
               </div>
-              <span className="hidden sm:inline font-semibold">
+              <span className="hidden sm:inline">
                 {lang === 'hi' ? 'AI वॉयस सहायक' : 'AI Voice Assistant'}
               </span>
-              <span className="sm:hidden font-semibold">Voice</span>
+              <span className="sm:hidden">Voice</span>
             </button>
 
             {/* Mobile Menu Hamburger */}

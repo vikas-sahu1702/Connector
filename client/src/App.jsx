@@ -168,7 +168,7 @@ function MainApp() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 text-slate-900">
+    <div className="flex flex-col min-h-screen bg-[#E7EDF1] text-[#190516]">
       
       {/* 1. Official Disclaimer Banner */}
       <DisclaimerBanner />
@@ -228,16 +228,16 @@ function MainApp() {
             />
 
             {/* Comprehensive Schemes Catalog Section */}
-            <section id="schemes-catalog-section" className="py-20 bg-slate-100/70 border-b border-slate-200">
+            <section id="schemes-catalog-section" className="py-20 bg-[#DDE3E8]/50 border-b border-[#DDE3E8]">
               <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 
                 {/* Catalog Controls Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
                   <div>
-                    <div className="text-xs font-bold uppercase tracking-wider text-blue-900 mb-1">
+                    <div className="text-xs font-bold uppercase tracking-wider text-[#EAAA00] mb-1">
                       {lang === 'hi' ? 'समस्त सरकारी योजनाएं' : 'National Scheme Repository'}
                     </div>
-                    <h2 className="text-2xl sm:text-3xl font-extrabold text-blue-950">
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-[#3A0F34]">
                       {lang === 'hi' ? 'योजना सूची एवं खोज' : 'Explore All Government Schemes'}
                     </h2>
                     <p className="text-xs sm:text-sm text-slate-500 mt-1">

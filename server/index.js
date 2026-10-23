@@ -1,7 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const { generateAssistantReply } = require('./llmService');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -361,11 +363,100 @@ app.post('/api/eligibility/check', (req, res) => {
 });
 
 // 5. AI Conversational Assistant ("Connector Sahayak / वानी")
-app.post('/api/assistant/chat', (req, res) => {
-  const { message = '', language = 'en' } = req.body;
+// Returns assistant status and active provider
+app.get('/api/assistant/status', (req, res) => {
+  const hasGemini = Boolean(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim());
+  const hasGroq = Boolean(process.env.GROQ_API_KEY && process.env.GROQ_API_KEY.trim());
+  const hasOpenAI = Boolean(process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.trim());
+
+  let activeProvider = "Built-in Verified Engine (Pattern Matching)";
+  if (hasGemini) activeProvider = "Google Gemini API (Free tier active)";
+  else if (hasGroq) activeProvider = "Groq API (Free tier active)";
+  else if (hasOpenAI) activeProvider = "OpenAI API active";
+
+  res.json({
+    success: true,
+    isLLMConfigured: hasGemini || hasGroq || hasOpenAI,
+    activeProvider,
+    providers: {
+      gemini: hasGemini,
+      groq: hasGroq,
+      openai: hasOpenAI
+    }
+  });
+});
+
+// Save API key dynamically (also persists to .env)
+app.post('/api/assistant/configure-key', (req, res) => {
+  const { provider = 'gemini', apiKey = '' } = req.body;
+  const trimmed = apiKey.trim();
+  if (!trimmed) {
+    return res.status(400).json({ success: false, error: "API key cannot be empty." });
+  }
+
+  if (provider === 'gemini') process.env.GEMINI_API_KEY = trimmed;
+  else if (provider === 'groq') process.env.GROQ_API_KEY = trimmed;
+  else if (provider === 'openai') process.env.OPENAI_API_KEY = trimmed;
+
+  try {
+    const envPath = path.join(__dirname, '.env');
+    let content = fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf8') : '';
+    const varName = provider === 'gemini' ? 'GEMINI_API_KEY' : (provider === 'groq' ? 'GROQ_API_KEY' : 'OPENAI_API_KEY');
+    
+    if (content.includes(`${varName}=`)) {
+      content = content.replace(new RegExp(`${varName}=.*`), `${varName}=${trimmed}`);
+    } else {
+      content += `\n${varName}=${trimmed}\n`;
+    }
+    fs.writeFileSync(envPath, content, 'utf8');
+    console.log(`[INFO] Successfully persisted ${varName} to ${envPath}`);
+  } catch (err) {
+    console.warn("[WARN] Could not persist to .env file:", err.message);
+  }
+
+  res.json({
+    success: true,
+    message: `${provider.toUpperCase()} API key configured and activated successfully!`,
+    activeProvider: provider
+  });
+});
+
+// Chat endpoint with LLM + Grounded RAG + Fallback
+app.post('/api/assistant/chat', async (req, res) => {
+  const { message = '', language = 'en', customApiKey, customProvider } = req.body;
   const q = message.trim().toLowerCase();
 
-  // Keyword extraction & Semantic Matching
+  // Try LLM Service first (Gemini / Groq / OpenAI)
+  try {
+    const llmResult = await generateAssistantReply({
+      message,
+      language,
+      schemesData,
+      customApiKey,
+      customProvider
+    });
+
+    if (llmResult && llmResult.isLLMPowered) {
+      return res.json({
+        success: true,
+        reply: llmResult.reply,
+        voiceText: llmResult.voiceText,
+        matchedSchemes: llmResult.matchedSchemes,
+        isLLMPowered: true,
+        provider: llmResult.provider,
+        suggestedQueries: [
+          "How to check eligibility for PM-KISAN?",
+          "Free hospital treatment under Ayushman Bharat",
+          "PM Vishwakarma ₹15,000 toolkit application",
+          "Sukanya Samriddhi Yojana account opening rules"
+        ]
+      });
+    }
+  } catch (llmErr) {
+    console.warn("[WARN] LLM Generation encountered an error, falling back to verified engine:", llmErr.message);
+  }
+
+  // Graceful fallback to built-in verified engine
   let matched = [];
   let answerText = "";
   let voiceText = "";
@@ -450,6 +541,8 @@ app.post('/api/assistant/chat', (req, res) => {
     reply: answerText,
     voiceText: voiceText,
     matchedSchemes: matched,
+    isLLMPowered: false,
+    provider: "Built-in Verified Engine",
     suggestedQueries: [
       "How to check eligibility for PM-KISAN?",
       "Free hospital treatment under Ayushman Bharat",

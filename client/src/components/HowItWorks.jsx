@@ -51,19 +51,19 @@ export default function HowItWorks({ onStartFinderClick }) {
   ];
 
   return (
-    <section className="py-20 bg-slate-50 border-b border-slate-200">
+    <section className="py-20 bg-[#E7EDF1]/40 border-b border-[#DDE3E8]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-blue-900 text-xs font-semibold uppercase tracking-wider mb-3">
-            <ShieldCheck className="w-4 h-4 text-blue-700" />
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#DDE3E8] text-[#3A0F34] border border-[#C5D0D9] text-xs font-bold uppercase tracking-wider mb-3">
+            <ShieldCheck className="w-4 h-4 text-[#EAAA00]" />
             {lang === 'hi' ? 'सरल नागरिक प्रक्रिया' : 'Simple 3-Step Process'}
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-blue-950 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#3A0F34] tracking-tight">
             {lang === 'hi' ? 'CONNECTOR कैसे काम करता है?' : 'How CONNECTOR Works'}
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-600">
+          <p className="mt-4 text-base sm:text-lg text-[#425466]">
             {lang === 'hi' 
               ? 'सरकारी योजनाओं का लाभ लेने में अब किसी दलाल या बिचौलिए की जरूरत नहीं। तीन सरल चरणों में आत्मनिर्भर बनें।' 
               : 'Accessing public welfare should never depend on middlemen. Discover, verify, and prepare with complete digital confidence.'}
@@ -77,34 +77,34 @@ export default function HowItWorks({ onStartFinderClick }) {
             return (
               <div 
                 key={idx}
-                className="bg-white rounded-2xl p-7 border border-slate-200 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1 relative"
+                className="bg-white rounded-3xl p-7 border border-[#DDE3E8] shadow-xs hover:border-[#EAAA00] hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1 relative"
               >
                 {/* Step Pill */}
                 <div className="flex items-center justify-between mb-5">
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-900 group-hover:bg-blue-900 group-hover:text-white transition-colors flex items-center justify-center font-bold text-lg shadow-xs">
+                  <div className="w-12 h-12 rounded-2xl bg-[#DDE3E8] text-[#3A0F34] group-hover:bg-[#3A0F34] group-hover:text-[#EAAA00] transition-colors flex items-center justify-center font-bold text-lg shadow-xs">
                     <Icon className="w-6 h-6" />
                   </div>
-                  <span className="text-3xl font-black text-slate-200 group-hover:text-blue-100 transition-colors">
+                  <span className="text-4xl font-black text-[#DDE3E8] group-hover:text-[#EAAA00]/30 transition-colors">
                     {step.num}
                   </span>
                 </div>
 
                 <div className="mb-6 flex-1">
-                  <span className="text-xs font-semibold text-amber-600 uppercase tracking-wider">
+                  <span className="text-xs font-bold text-[#EAAA00] uppercase tracking-wider">
                     {step.badge}
                   </span>
-                  <h3 className="text-xl font-bold text-blue-950 mt-1 mb-3">
+                  <h3 className="text-xl font-bold text-[#3A0F34] mt-1 mb-3">
                     {step.title}
                   </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                  <p className="text-sm text-[#425466] leading-relaxed mb-4">
                     {step.desc}
                   </p>
 
                   {/* Bullet points */}
-                  <ul className="space-y-2 text-xs text-slate-700 pt-2 border-t border-slate-100">
+                  <ul className="space-y-2 text-xs text-[#190516] pt-2 border-t border-[#DDE3E8]/60">
                     {step.points.map((pt, pIdx) => (
                       <li key={pIdx} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 text-[#EAAA00] shrink-0 mt-0.5" />
                         <span>{pt}</span>
                       </li>
                     ))}
@@ -116,22 +116,22 @@ export default function HowItWorks({ onStartFinderClick }) {
         </div>
 
         {/* Bottom CTA Banner */}
-        <div className="mt-14 bg-gradient-to-r from-blue-950 to-blue-900 text-white rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-md">
+        <div className="mt-14 bg-gradient-to-r from-[#190516] via-[#2A0826] to-[#3A0F34] text-white rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl border border-[#DDE3E8]/20">
           <div className="text-center sm:text-left">
             <h4 className="text-xl font-bold text-white">
               {lang === 'hi' ? 'क्या आप जानना चाहते हैं कि आप किन योजनाओं के पात्र हैं?' : 'Ready to discover all welfare schemes you qualify for?'}
             </h4>
-            <p className="text-sm text-blue-200 mt-1">
+            <p className="text-sm text-[#DDE3E8]/90 mt-1">
               {lang === 'hi' ? 'मुफ्त पात्रता कैलकुलेटर शुरू करें। मात्र 2 मिनट का समय लगेगा।' : 'Launch our intelligent eligibility calculator. Takes less than 2 minutes.'}
             </p>
           </div>
           <button
             onClick={onStartFinderClick}
-            className="shrink-0 px-6 py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-sm transition-transform hover:scale-105 flex items-center gap-2 shadow-lg"
+            className="shrink-0 px-6 py-3.5 bg-gradient-to-r from-[#EAAA00] to-[#D49B00] hover:from-[#D49B00] hover:to-[#BD8700] text-[#190516] font-bold rounded-xl text-sm transition-transform hover:scale-105 flex items-center gap-2 shadow-lg cursor-pointer"
           >
-            <Sparkles className="w-4 h-4" />
+            <Sparkles className="w-4 h-4 text-[#190516]" />
             <span>{lang === 'hi' ? 'पात्रता की जांच करें' : 'Check Eligibility Now'}</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 text-[#190516]" />
           </button>
         </div>
 

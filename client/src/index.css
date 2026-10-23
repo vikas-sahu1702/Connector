@@ -1,19 +1,135 @@
 @import "tailwindcss";
 
+@theme {
+  /* Requested Color Palette */
+  --color-ice-silver: #DDE3E8;
+  --color-deep-aubergine: #3A0F34;
+  --color-marigold: #EAAA00;
+
+  /* Deep Aubergine Family (#3A0F34) */
+  --color-aubergine-950: #190516;
+  --color-aubergine-900: #260822;
+  --color-aubergine-850: #300A2B;
+  --color-aubergine-800: #3A0F34;
+  --color-aubergine-700: #501648;
+  --color-aubergine-600: #691E5F;
+  --color-aubergine-500: #882B7B;
+  --color-aubergine-400: #A84199;
+  --color-aubergine-300: #C76EB9;
+  --color-aubergine-200: #E2A4D8;
+  --color-aubergine-100: #F4D5EE;
+  --color-aubergine-50:  #FAF3F9;
+
+  /* Marigold Family (#EAAA00) */
+  --color-marigold-900: #664100;
+  --color-marigold-800: #8A5600;
+  --color-marigold-700: #AD6D00;
+  --color-marigold-600: #C78A00;
+  --color-marigold-500: #EAAA00;
+  --color-marigold-400: #F3BC24;
+  --color-marigold-300: #FCD059;
+  --color-marigold-200: #FFE594;
+  --color-marigold-100: #FFF2CC;
+  --color-marigold-50:  #FFFBF0;
+
+  /* Ice Silver Family (#DDE3E8) */
+  --color-icesilver-950: #0C1116;
+  --color-icesilver-900: #17212A;
+  --color-icesilver-800: #293644;
+  --color-icesilver-700: #425466;
+  --color-icesilver-600: #61758A;
+  --color-icesilver-500: #889DB0;
+  --color-icesilver-400: #B4C4D2;
+  --color-icesilver-300: #DDE3E8;
+  --color-icesilver-200: #EBF0F3;
+  --color-icesilver-100: #F4F7F9;
+  --color-icesilver-50:  #F9FBFC;
+
+  /* Map existing utility classes so all components adopt the new brand identity */
+  --color-blue-950: #190516;
+  --color-blue-900: #260822;
+  --color-blue-800: #3A0F34;
+  --color-blue-700: #501648;
+  --color-blue-600: #691E5F;
+  --color-blue-500: #882B7B;
+  --color-blue-400: #A84199;
+  --color-blue-300: #C76EB9;
+  --color-blue-200: #E2A4D8;
+  --color-blue-100: #F4D5EE;
+  --color-blue-50:  #FAF3F9;
+
+  --color-amber-950: #421D00;
+  --color-amber-900: #664100;
+  --color-amber-800: #8A5600;
+  --color-amber-700: #AD6D00;
+  --color-amber-600: #C78A00;
+  --color-amber-500: #EAAA00;
+  --color-amber-400: #F3BC24;
+  --color-amber-300: #FCD059;
+  --color-amber-200: #FFE594;
+  --color-amber-100: #FFF2CC;
+  --color-amber-50:  #FFFBF0;
+
+  --color-slate-950: #0C1116;
+  --color-slate-900: #17212A;
+  --color-slate-800: #293644;
+  --color-slate-700: #425466;
+  --color-slate-600: #61758A;
+  --color-slate-500: #889DB0;
+  --color-slate-400: #B4C4D2;
+  --color-slate-300: #C8D3DC;
+  --color-slate-200: #DDE3E8;
+  --color-slate-100: #E7EDF1;
+  --color-slate-50:  #F2F5F8;
+
+  /* Map emerald & green tokens to Marigold and Aubergine */
+  --color-emerald-950: #190516;
+  --color-emerald-900: #260822;
+  --color-emerald-800: #3A0F34;
+  --color-emerald-700: #8A5600;
+  --color-emerald-600: #C78A00;
+  --color-emerald-500: #EAAA00;
+  --color-emerald-400: #F3BC24;
+  --color-emerald-300: #FCD059;
+  --color-emerald-200: #FFE594;
+  --color-emerald-100: #FFF2CC;
+  --color-emerald-50:  #FFFBF0;
+
+  --color-green-950: #190516;
+  --color-green-900: #260822;
+  --color-green-800: #3A0F34;
+  --color-green-700: #8A5600;
+  --color-green-600: #C78A00;
+  --color-green-500: #EAAA00;
+  --color-green-400: #F3BC24;
+  --color-green-300: #FCD059;
+  --color-green-200: #FFE594;
+  --color-green-100: #FFF2CC;
+  --color-green-50:  #FFFBF0;
+}
+
 @layer base {
   :root {
-    --primary-navy: #0B2545;
-    --navy-light: #133E6E;
-    --gov-blue: #1E3A8A;
-    --saffron: #F97316;
-    --saffron-dark: #EA580C;
-    --chakra-blue: #104C91;
-    --gov-green: #15803D;
-    --gov-green-light: #16A34A;
+    --ice-silver: #DDE3E8;
+    --deep-aubergine: #3A0F34;
+    --marigold: #EAAA00;
+
+    --primary-navy: #3A0F34;
+    --navy-light: #501648;
+    --gov-blue: #260822;
+    --saffron: #EAAA00;
+    --saffron-dark: #C78A00;
+    --chakra-blue: #3A0F34;
+    --gov-green: #EAAA00;
+    --gov-green-light: #F3BC24;
   }
 
   body {
-    @apply bg-slate-50 text-slate-900 font-sans antialiased min-h-screen selection:bg-amber-200 selection:text-slate-900;
+    background-color: #E7EDF1;
+    color: #190516;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
   }
 
   #root {
@@ -38,31 +154,9 @@ body.font-size-xl {
   font-size: 20px;
 }
 
-body.high-contrast {
-  filter: contrast(125%);
-  background-color: #000000 !important;
-  color: #ffffff !important;
-}
-
-body.high-contrast header,
-body.high-contrast nav,
-body.high-contrast footer,
-body.high-contrast .bg-white,
-body.high-contrast .bg-slate-50,
-body.high-contrast .bg-slate-100 {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border-color: #ffffff !important;
-}
-
-body.high-contrast .text-slate-600,
-body.high-contrast .text-slate-700,
-body.high-contrast .text-slate-500 {
-  color: #e2e8f0 !important;
-}
-
-body.high-contrast .border {
-  border-color: #ffffff !important;
+/* Strictly Light Mode */
+:root, html, body {
+  color-scheme: light !important;
 }
 
 /* Custom scrollbar */

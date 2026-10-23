@@ -50,11 +50,11 @@ export default function Footer({ onOpenFeedback }) {
   ];
 
   return (
-    <footer className="bg-slate-950 text-slate-300 pt-16 pb-12 border-t border-slate-800">
+    <footer className="bg-gradient-to-b from-[#190516] to-[#0E030C] text-[#DDE3E8] pt-16 pb-12 border-t border-[#3A0F34]/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
         
         {/* Trust & Non-Impersonation Disclaimer Banner */}
-        <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 text-xs sm:text-sm text-slate-300 flex flex-col md:flex-row items-start gap-4">
+        <div className="p-6 rounded-2xl bg-[#260822] border border-[#3A0F34] text-xs sm:text-sm text-[#DDE3E8]/90 flex flex-col md:flex-row items-start gap-4 shadow-sm">
           <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400 shrink-0 mt-0.5">
             <ShieldCheck className="w-5 h-5" />
           </div>

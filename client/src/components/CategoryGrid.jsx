@@ -44,19 +44,19 @@ export default function CategoryGrid({ selectedCategory, onSelectCategory, categ
   };
 
   return (
-    <section className="py-16 bg-white border-b border-slate-200">
+    <section className="py-16 bg-[#E7EDF1]/60 border-b border-[#DDE3E8]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
           <div>
-            <div className="text-xs font-bold uppercase tracking-wider text-blue-900 mb-1">
+            <div className="text-xs font-bold uppercase tracking-wider text-[#EAAA00] mb-1">
               {lang === 'hi' ? 'श्रेणी अनुसार खोजें' : 'Targeted Portals'}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-blue-950">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#3A0F34]">
               {lang === 'hi' ? 'आवश्यकता के अनुसार योजनाएं' : 'Explore Schemes by Category'}
             </h2>
           </div>
-          <p className="text-sm text-slate-500 max-w-md">
+          <p className="text-sm text-[#425466] max-w-md font-medium">
             {lang === 'hi' 
               ? 'किसान, छात्र, महिला, वरिष्ठ नागरिक और उद्यमी सभी के लिए विशिष्ट सरकारी योजनाएं उपलब्ध हैं।'
               : 'Tailored welfare initiatives covering farmers, students, artisans, women, seniors, and entrepreneurs.'}
@@ -73,34 +73,34 @@ export default function CategoryGrid({ selectedCategory, onSelectCategory, categ
               <button
                 key={cat.id}
                 onClick={() => onSelectCategory(cat.id)}
-                className={`group text-left p-4 rounded-xl border transition-all duration-200 flex flex-col justify-between relative cursor-pointer ${
+                className={`category-card group text-left p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative cursor-pointer ${
                   isSelected
-                    ? 'border-blue-900 bg-blue-900 text-white shadow-md ring-2 ring-blue-900/20'
-                    : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
+                    ? 'border-[#EAAA00] bg-[#3A0F34] text-white shadow-xl ring-2 ring-[#EAAA00]/40'
+                    : 'border-[#DDE3E8] bg-white hover:border-[#EAAA00] hover:shadow-lg hover:-translate-y-0.5'
                 }`}
               >
                 <div>
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 transition-colors ${
+                  <div className={`category-icon-box w-11 h-11 rounded-xl flex items-center justify-center mb-3 transition-colors ${
                     isSelected 
-                      ? 'bg-white/10 text-amber-300' 
-                      : 'bg-slate-100 text-slate-700 group-hover:bg-blue-50 group-hover:text-blue-900'
+                      ? 'bg-[#EAAA00] text-[#190516] shadow-sm' 
+                      : 'bg-[#DDE3E8] text-[#3A0F34] group-hover:bg-[#EAAA00] group-hover:text-[#190516]'
                   }`}>
                     <Icon className="w-5 h-5" />
                   </div>
 
-                  <h3 className={`text-sm font-bold leading-snug line-clamp-2 ${
-                    isSelected ? 'text-white' : 'text-slate-900 group-hover:text-blue-900'
+                  <h3 className={`category-title text-sm font-bold leading-snug line-clamp-2 transition-colors ${
+                    isSelected ? 'text-white' : 'text-[#190516] group-hover:text-[#3A0F34]'
                   }`}>
                     {lang === 'hi' && cat.hindiName ? cat.hindiName : cat.name}
                   </h3>
                 </div>
 
-                <div className="mt-4 pt-2 border-t border-slate-100/30 flex items-center justify-between text-xs">
-                  <span className={`font-semibold ${isSelected ? 'text-amber-300' : 'text-slate-500'}`}>
+                <div className="mt-4 pt-2 border-t border-[#DDE3E8]/60 flex items-center justify-between text-xs">
+                  <span className={`category-count font-bold ${isSelected ? 'text-[#EAAA00]' : 'text-[#61758A] group-hover:text-[#EAAA00]'}`}>
                     {cat.count !== undefined ? `${cat.count} ${lang === 'hi' ? 'योजनाएं' : 'Schemes'}` : ''}
                   </span>
                   <ArrowRight className={`w-3.5 h-3.5 transition-transform group-hover:translate-x-1 ${
-                    isSelected ? 'text-white' : 'text-slate-400 group-hover:text-blue-900'
+                    isSelected ? 'text-[#EAAA00]' : 'text-[#889DB0] group-hover:text-[#EAAA00]'
                   }`} />
                 </div>
               </button>

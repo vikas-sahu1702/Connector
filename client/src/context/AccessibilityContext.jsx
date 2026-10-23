@@ -7,28 +7,21 @@ export function AccessibilityProvider({ children }) {
     return localStorage.getItem('connector_fontSize') || 'base';
   });
 
-  const [highContrast, setHighContrast] = useState(() => {
-    return localStorage.getItem('connector_highContrast') === 'true';
-  });
-
   const [easyRead, setEasyRead] = useState(() => {
     return localStorage.getItem('connector_easyRead') === 'true';
   });
+
+  // Ensure dark/high-contrast mode is completely cleared for light mode only
+  useEffect(() => {
+    localStorage.removeItem('connector_highContrast');
+    document.body.classList.remove('high-contrast');
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('connector_fontSize', fontSize);
     document.body.classList.remove('font-size-sm', 'font-size-base', 'font-size-lg', 'font-size-xl');
     document.body.classList.add(`font-size-${fontSize}`);
   }, [fontSize]);
-
-  useEffect(() => {
-    localStorage.setItem('connector_highContrast', highContrast);
-    if (highContrast) {
-      document.body.classList.add('high-contrast');
-    } else {
-      document.body.classList.remove('high-contrast');
-    }
-  }, [highContrast]);
 
   useEffect(() => {
     localStorage.setItem('connector_easyRead', easyRead);
@@ -50,10 +43,6 @@ export function AccessibilityProvider({ children }) {
     setFontSize('base');
   };
 
-  const toggleHighContrast = () => {
-    setHighContrast(prev => !prev);
-  };
-
   const toggleEasyRead = () => {
     setEasyRead(prev => !prev);
   };
@@ -66,8 +55,6 @@ export function AccessibilityProvider({ children }) {
         increaseFontSize,
         decreaseFontSize,
         resetFontSize,
-        highContrast,
-        toggleHighContrast,
         easyRead,
         toggleEasyRead
       }}

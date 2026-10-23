@@ -33,18 +33,23 @@ export default function Hero({ onSearchSubmit, onFindSchemesClick, onVoiceAssist
   ];
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-blue-950 via-blue-900 to-slate-900 text-white pt-12 pb-20 px-4 sm:px-6">
-      {/* Background Decorative Pattern */}
-      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#190516] via-[#2A0826] to-[#3A0F34] text-white pt-12 pb-20 px-4 sm:px-6">
+      {/* Background Architectural Pinstripes & Radiant Marigold Ambient Glow */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-40"
+        style={{
+          backgroundImage: `repeating-linear-gradient(90deg, rgba(221, 227, 232, 0.08) 0px, rgba(221, 227, 232, 0.08) 1px, transparent 1px, transparent 96px), radial-gradient(circle at 50% 0%, rgba(234, 170, 0, 0.18), transparent 65%)`
+        }}
+      ></div>
 
       <div className="max-w-5xl mx-auto text-center relative z-10">
         
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-800/80 border border-blue-600/60 text-blue-200 text-xs sm:text-sm font-medium mb-6 backdrop-blur-xs">
-          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#3A0F34]/90 border border-amber-400/50 text-[#DDE3E8] text-xs sm:text-sm font-medium mb-6 shadow-sm backdrop-blur-xs">
+          <ShieldCheck className="w-4 h-4 text-amber-400" />
           <span>{t('heroBadge')}</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-          <span className="text-amber-300">National Welfare Catalog</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+          <span className="text-amber-300 font-semibold">National Welfare Catalog</span>
         </div>
 
         {/* Hero Title */}
@@ -52,14 +57,14 @@ export default function Hero({ onSearchSubmit, onFindSchemesClick, onVoiceAssist
           {lang === 'hi' ? (
             <>
               हर सरकारी योजना। <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-300 to-emerald-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-200 to-slate-200">
                 एक सरल डिजिटल मंच।
               </span>
             </>
           ) : (
             <>
               Every Government Scheme. <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-300 to-emerald-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-200 to-slate-200">
                 One Simple Platform.
               </span>
             </>
@@ -160,22 +165,22 @@ export default function Hero({ onSearchSubmit, onFindSchemesClick, onVoiceAssist
       </div>
 
       {/* Live Statistics Ticker */}
-      <div className="max-w-6xl mx-auto mt-16 pt-8 border-t border-blue-800/60 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-        <div className="p-3">
-          <div className="text-2xl sm:text-3xl font-extrabold text-amber-400">500+</div>
-          <div className="text-xs sm:text-sm text-blue-200 mt-1">Government Schemes Cataloged</div>
+      <div className="max-w-6xl mx-auto mt-16 pt-8 border-t border-[#DDE3E8]/20 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div className="p-3 bg-white/5 rounded-2xl border border-[#DDE3E8]/10 backdrop-blur-xs">
+          <div className="text-2xl sm:text-3xl font-extrabold text-[#EAAA00]">500+</div>
+          <div className="text-xs sm:text-sm text-[#DDE3E8]/90 mt-1 font-medium">Government Schemes Cataloged</div>
         </div>
-        <div className="p-3">
-          <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400">1.2M+</div>
-          <div className="text-xs sm:text-sm text-blue-200 mt-1">Indian Citizens Guided</div>
+        <div className="p-3 bg-white/5 rounded-2xl border border-[#DDE3E8]/10 backdrop-blur-xs">
+          <div className="text-2xl sm:text-3xl font-extrabold text-[#FCD059]">1.2M+</div>
+          <div className="text-xs sm:text-sm text-[#DDE3E8]/90 mt-1 font-medium">Indian Citizens Guided</div>
         </div>
-        <div className="p-3">
-          <div className="text-2xl sm:text-3xl font-extrabold text-blue-300">₹15,000+ Cr</div>
-          <div className="text-xs sm:text-sm text-blue-200 mt-1">Direct Benefit Transfer (DBT) Tracked</div>
+        <div className="p-3 bg-white/5 rounded-2xl border border-[#DDE3E8]/10 backdrop-blur-xs">
+          <div className="text-2xl sm:text-3xl font-extrabold text-[#DDE3E8]">₹15,000+ Cr</div>
+          <div className="text-xs sm:text-sm text-[#DDE3E8]/90 mt-1 font-medium">Direct Benefit Transfer (DBT) Tracked</div>
         </div>
-        <div className="p-3">
-          <div className="text-2xl sm:text-3xl font-extrabold text-amber-300">28 States & UTs</div>
-          <div className="text-xs sm:text-sm text-blue-200 mt-1">Official Portals Integrated</div>
+        <div className="p-3 bg-white/5 rounded-2xl border border-[#DDE3E8]/10 backdrop-blur-xs">
+          <div className="text-2xl sm:text-3xl font-extrabold text-[#EAAA00]">28 States & UTs</div>
+          <div className="text-xs sm:text-sm text-[#DDE3E8]/90 mt-1 font-medium">Official Portals Integrated</div>
         </div>
       </div>
 

@@ -66,13 +66,13 @@ export default function SchemeCard({
           
           {/* Ministry & Sponsor Badges */}
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-100 text-blue-900 border border-blue-200">
-              <Building className="w-3 h-3" />
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#DDE3E8] text-[#3A0F34] border border-[#C5D0D9]">
+              <Building className="w-3 h-3 text-[#3A0F34]" />
               {scheme.sponsor}
             </span>
             {scheme.isVerified && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                <ShieldCheck className="w-3 h-3 text-emerald-600" />
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#3A0F34] text-[#EAAA00] border border-[#EAAA00]/40">
+                <ShieldCheck className="w-3 h-3 text-[#EAAA00]" />
                 {lang === 'hi' ? 'सत्यापित' : 'Govt Verified'}
               </span>
             )}
@@ -172,7 +172,7 @@ export default function SchemeCard({
             <span className="text-slate-600 line-clamp-1">{scheme.eligibilityCriteria.summary}</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <FileCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+            <FileCheck className="w-3.5 h-3.5 text-[#EAAA00] shrink-0" />
             <span className="font-semibold text-slate-700">{lang === 'hi' ? 'दस्तावेज:' : 'Docs:'}</span>
             <span className="text-slate-600">
               {scheme.documentsRequired.length} {lang === 'hi' ? 'अनिवार्य प्रमाण पत्र' : 'Required documents'}
@@ -183,10 +183,10 @@ export default function SchemeCard({
       </div>
 
       {/* Card Footer Actions */}
-      <div className="px-5 sm:px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
+      <div className="px-5 sm:px-6 py-3.5 bg-[#E7EDF1]/60 border-t border-[#DDE3E8] flex items-center justify-between gap-2">
         <button
           onClick={() => onViewDetails(scheme)}
-          className="text-xs sm:text-sm font-semibold text-blue-900 hover:text-blue-700 flex items-center gap-1 transition-colors"
+          className="text-xs sm:text-sm font-bold text-[#3A0F34] hover:text-[#EAAA00] flex items-center gap-1 transition-colors cursor-pointer"
         >
           <span>{lang === 'hi' ? 'विस्तृत विवरण' : 'View Details'}</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -197,7 +197,7 @@ export default function SchemeCard({
             <button
               onClick={() => onOpenPrintSlip(scheme)}
               title="Print Application Preparation Slip"
-              className="p-1.5 text-slate-500 hover:text-blue-950 hover:bg-slate-200 rounded transition-colors"
+              className="p-1.5 text-slate-500 hover:text-[#3A0F34] hover:bg-[#DDE3E8] rounded transition-colors"
             >
               <Printer className="w-4 h-4" />
             </button>
@@ -205,7 +205,7 @@ export default function SchemeCard({
 
           <button
             onClick={() => onPrepareApplication(scheme)}
-            className="px-3 py-1.5 rounded-lg bg-blue-900 hover:bg-blue-800 text-white font-semibold text-xs transition-colors shadow-xs"
+            className="px-3 py-1.5 rounded-xl bg-[#3A0F34] hover:bg-[#190516] text-[#EAAA00] hover:text-white font-bold text-xs transition-colors shadow-xs border border-[#EAAA00]/40 cursor-pointer"
           >
             {lang === 'hi' ? 'आवेदन सहायता' : 'Prepare App'}
           </button>
