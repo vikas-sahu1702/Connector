@@ -370,8 +370,8 @@ app.get('/api/assistant/status', (req, res) => {
   const hasOpenAI = Boolean(process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.trim());
 
   let activeProvider = "Built-in Verified Engine (Pattern Matching)";
-  if (hasGemini) activeProvider = "Google Gemini API (Free tier active)";
-  else if (hasGroq) activeProvider = "Groq API (Free tier active)";
+  if (hasGroq) activeProvider = "Groq API (Free LLaMA 3.3 active)";
+  else if (hasGemini) activeProvider = "Google Gemini API (Free tier active)";
   else if (hasOpenAI) activeProvider = "OpenAI API active";
 
   res.json({

@@ -115,39 +115,56 @@ async function callGemini(apiKey, prompt, model = "gemini-1.5-flash") {
 /**
  * Call Groq API (Free tier from Groq Console)
  */
-async function callGroq(apiKey, prompt, model = "llama-3.3-70b-versatile") {
-  const url = "https://api.groq.com/openai/v1/chat/completions";
+async function callGroq(apiKey, prompt, preferredModel = "openai/gpt-oss-120b") {
+  const candidateModels = [
+    preferredModel,
+    "openai/gpt-oss-120b",
+    "openai/gpt-oss-20b",
+    "qwen/qwen3.8-27b",
+    "llama-3.3-70b-versatile"
+  ];
+  const models = [...new Set(candidateModels)];
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      model: model,
-      messages: [
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      temperature: 0.3,
-      max_tokens: 800
-    })
-  });
+  let lastError = null;
+  for (const model of models) {
+    try {
+      const url = "https://api.groq.com/openai/v1/chat/completions";
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: [
+            {
+              role: "user",
+              content: prompt
+            }
+          ],
+          temperature: 0.3,
+          max_tokens: 800
+        })
+      });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Groq API error (${response.status}): ${errorText}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Groq API error (${response.status}) on model ${model}: ${errorText}`);
+      }
+
+      const data = await response.json();
+      const text = data?.choices?.[0]?.message?.content;
+      if (text) {
+        return text;
+      }
+    } catch (err) {
+      lastError = err;
+      console.warn(`[WARN] Groq model ${model} failed, trying next candidate...`);
+    }
   }
 
-  const data = await response.json();
-  const text = data?.choices?.[0]?.message?.content;
-  if (!text) {
-    throw new Error("Empty response received from Groq API");
-  }
-  return text;
+  throw lastError || new Error("Failed to get response from any Groq model");
 }
 
 /**
@@ -219,54 +236,63 @@ CITIZEN'S QUESTION:
 "${message}"
 `;
 
-  // 1. Try Google Gemini (Free via Google AI Studio)
-  if (geminiKey) {
-    try {
-      console.log("[INFO] Generating response using Google Gemini API...");
-      const text = await callGemini(geminiKey, systemInstructions);
-      return {
-        reply: text,
-        voiceText: cleanVoiceText(text),
-        matchedSchemes,
-        isLLMPowered: true,
-        provider: "Google Gemini (Free AI Studio)"
-      };
-    } catch (err) {
-      console.warn("[WARN] Gemini API call failed:", err.message);
-    }
+  // Build provider execution list based on priority and explicit preference
+  const providersToTry = [];
+
+  if (customProvider) {
+    if (customProvider === 'groq' && groqKey) providersToTry.push('groq');
+    else if (customProvider === 'gemini' && geminiKey) providersToTry.push('gemini');
+    else if (customProvider === 'openai' && openAIKey) providersToTry.push('openai');
   }
 
-  // 2. Try Groq (Free via Groq Console)
-  if (groqKey) {
-    try {
-      console.log("[INFO] Generating response using Groq API (LLaMA 3.3)...");
-      const text = await callGroq(groqKey, systemInstructions);
-      return {
-        reply: text,
-        voiceText: cleanVoiceText(text),
-        matchedSchemes,
-        isLLMPowered: true,
-        provider: "Groq (Free LLaMA 3.3)"
-      };
-    } catch (err) {
-      console.warn("[WARN] Groq API call failed:", err.message);
-    }
-  }
+  // Next order: Groq (ultra-fast LLaMA 3.3) -> Gemini -> OpenAI
+  if (groqKey && !providersToTry.includes('groq')) providersToTry.push('groq');
+  if (geminiKey && !providersToTry.includes('gemini')) providersToTry.push('gemini');
+  if (openAIKey && !providersToTry.includes('openai')) providersToTry.push('openai');
 
-  // 3. Try OpenAI
-  if (openAIKey) {
-    try {
-      console.log("[INFO] Generating response using OpenAI API...");
-      const text = await callOpenAI(openAIKey, systemInstructions);
-      return {
-        reply: text,
-        voiceText: cleanVoiceText(text),
-        matchedSchemes,
-        isLLMPowered: true,
-        provider: "OpenAI"
-      };
-    } catch (err) {
-      console.warn("[WARN] OpenAI API call failed:", err.message);
+  for (const provider of providersToTry) {
+    if (provider === 'groq') {
+      try {
+        console.log("[INFO] Generating response using Groq API (LLaMA 3.3)...");
+        const text = await callGroq(groqKey, systemInstructions);
+        return {
+          reply: text,
+          voiceText: cleanVoiceText(text),
+          matchedSchemes,
+          isLLMPowered: true,
+          provider: "Groq (Free LLaMA 3.3)"
+        };
+      } catch (err) {
+        console.warn("[WARN] Groq API call failed:", err.message);
+      }
+    } else if (provider === 'gemini') {
+      try {
+        console.log("[INFO] Generating response using Google Gemini API...");
+        const text = await callGemini(geminiKey, systemInstructions);
+        return {
+          reply: text,
+          voiceText: cleanVoiceText(text),
+          matchedSchemes,
+          isLLMPowered: true,
+          provider: "Google Gemini (Free AI Studio)"
+        };
+      } catch (err) {
+        console.warn("[WARN] Gemini API call failed:", err.message);
+      }
+    } else if (provider === 'openai') {
+      try {
+        console.log("[INFO] Generating response using OpenAI API...");
+        const text = await callOpenAI(openAIKey, systemInstructions);
+        return {
+          reply: text,
+          voiceText: cleanVoiceText(text),
+          matchedSchemes,
+          isLLMPowered: true,
+          provider: "OpenAI"
+        };
+      } catch (err) {
+        console.warn("[WARN] OpenAI API call failed:", err.message);
+      }
     }
   }
 

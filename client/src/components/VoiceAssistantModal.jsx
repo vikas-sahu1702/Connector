@@ -42,7 +42,7 @@ export default function VoiceAssistantModal({ isOpen, onClose, initialPrompt = '
   // LLM API Key Configuration State
   const [apiKeyModalOpen, setApiKeyModalOpen] = useState(false);
   const [assistantStatus, setAssistantStatus] = useState(null);
-  const [selectedProvider, setSelectedProvider] = useState('gemini');
+  const [selectedProvider, setSelectedProvider] = useState('groq');
   const [inputApiKey, setInputApiKey] = useState('');
   const [isSavingKey, setIsSavingKey] = useState(false);
   const [keySaveMessage, setKeySaveMessage] = useState(null);
@@ -439,7 +439,7 @@ export default function VoiceAssistantModal({ isOpen, onClose, initialPrompt = '
                   type="password"
                   value={inputApiKey}
                   onChange={(e) => setInputApiKey(e.target.value)}
-                  placeholder={selectedProvider === 'gemini' ? 'Paste Gemini Key (AIzaSy...)' : 'Paste API Key'}
+                  placeholder={selectedProvider === 'gemini' ? 'Paste Gemini Key (AIzaSy...)' : selectedProvider === 'groq' ? 'Paste Groq Key (gsk_...)' : 'Paste API Key'}
                   className="flex-1 px-3 py-2 text-xs rounded-xl bg-black/40 border border-[#DDE3E8]/30 text-white placeholder-slate-500 focus:outline-hidden focus:border-[#EAAA00]"
                 />
                 <button
