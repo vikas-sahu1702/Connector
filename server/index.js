@@ -4,6 +4,12 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const { generateAssistantReply } = require('./llmService');
+const {
+  isSupabaseConfigured,
+  getSchemesFromSupabase,
+  upsertSchemeInSupabase,
+  deleteSchemeFromSupabase
+} = require('./supabaseClient');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -11,18 +17,34 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// In-memory + JSON file storage
+// In-memory + JSON file storage (with Supabase sync)
 const schemesFilePath = path.join(__dirname, 'data', 'schemes.json');
 let schemesData = [];
 
-function loadSchemes() {
+async function loadSchemes() {
+  // 1. Initial fast load from local disk cache
   try {
     const raw = fs.readFileSync(schemesFilePath, 'utf8');
     schemesData = JSON.parse(raw);
-    console.log(`[INFO] Loaded ${schemesData.length} schemes from disk.`);
+    console.log(`[INFO] Loaded ${schemesData.length} schemes from disk cache.`);
   } catch (err) {
-    console.error('[ERROR] Could not load schemes:', err);
+    console.error('[ERROR] Could not load schemes from disk cache:', err);
     schemesData = [];
+  }
+
+  // 2. If Supabase is connected, synchronize from Supabase database
+  if (isSupabaseConfigured()) {
+    try {
+      const liveSchemes = await getSchemesFromSupabase();
+      if (liveSchemes && liveSchemes.length > 0) {
+        schemesData = liveSchemes;
+        console.log(`[INFO] Successfully synchronized ${schemesData.length} schemes from Supabase database.`);
+      } else {
+        console.log('[INFO] Supabase connected. Schemes table is ready to be seeded (run: npm run seed:supabase).');
+      }
+    } catch (err) {
+      console.warn('[WARN] Could not fetch schemes from Supabase, keeping local cache:', err.message);
+    }
   }
 }
 loadSchemes();
@@ -580,13 +602,23 @@ app.get('/api/admin/stats', (req, res) => {
 });
 
 // 7. Admin Scheme Management (Create / Update)
-app.post('/api/admin/schemes', (req, res) => {
+app.post('/api/admin/schemes', async (req, res) => {
   const newScheme = req.body;
   if (!newScheme.id || !newScheme.name || !newScheme.category) {
     return res.status(400).json({ success: false, message: "ID, Name, and Category are required." });
   }
 
-  // Check if exists
+  // Persist to Supabase if configured
+  if (isSupabaseConfigured()) {
+    try {
+      await upsertSchemeInSupabase(newScheme);
+      console.log(`[INFO] Scheme '${newScheme.id}' saved to Supabase.`);
+    } catch (err) {
+      console.warn('[WARN] Supabase upsert error:', err.message);
+    }
+  }
+
+  // Check if exists in local state
   const existingIndex = schemesData.findIndex(s => s.id === newScheme.id);
   if (existingIndex >= 0) {
     schemesData[existingIndex] = { ...schemesData[existingIndex], ...newScheme, verifiedDate: "Updated October 2026", isVerified: true };
@@ -598,7 +630,7 @@ app.post('/api/admin/schemes', (req, res) => {
     });
   }
 
-  // Persist to file
+  // Persist to local JSON file as backup
   try {
     fs.writeFileSync(schemesFilePath, JSON.stringify(schemesData, null, 2), 'utf8');
   } catch (err) {
@@ -606,6 +638,30 @@ app.post('/api/admin/schemes', (req, res) => {
   }
 
   res.json({ success: true, message: "Scheme saved successfully.", scheme: newScheme });
+});
+
+// 7b. Admin Scheme Delete
+app.delete('/api/admin/schemes/:id', async (req, res) => {
+  const { id } = req.params;
+
+  if (isSupabaseConfigured()) {
+    try {
+      await deleteSchemeFromSupabase(id);
+      console.log(`[INFO] Scheme '${id}' deleted from Supabase.`);
+    } catch (err) {
+      console.warn('[WARN] Supabase delete error:', err.message);
+    }
+  }
+
+  schemesData = schemesData.filter(s => s.id !== id);
+
+  try {
+    fs.writeFileSync(schemesFilePath, JSON.stringify(schemesData, null, 2), 'utf8');
+  } catch (err) {
+    console.error('[ERROR] Could not persist deletion to disk:', err);
+  }
+
+  res.json({ success: true, message: `Scheme ${id} deleted successfully.` });
 });
 
 // 8. Citizen Feedback Submission
@@ -636,7 +692,8 @@ app.get('/api/health', (req, res) => {
     status: "ok",
     platform: "CONNECTOR",
     service: "Government Schemes for Everyone API",
-    version: "2.0.0",
+    version: "2.1.0",
+    database: isSupabaseConfigured() ? "Supabase (PostgreSQL)" : "Local JSON Store",
     schemesLoaded: schemesData.length,
     timestamp: new Date().toISOString()
   });
